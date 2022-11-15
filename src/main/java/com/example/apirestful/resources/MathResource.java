@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MathRescource {
+public class MathResource {
 
     private SimpleMath math = new SimpleMath();
 
