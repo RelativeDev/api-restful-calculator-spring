@@ -1,12 +1,11 @@
 package com.example.apirestful.resources;
 
-import com.example.apirestful.converters.NumberConverter;
-import com.example.apirestful.exception.UnsuportedMathOperationException;
 import com.example.apirestful.math.SimpleMath;
 import com.example.apirestful.model.Person;
 import com.example.apirestful.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,35 +17,32 @@ public class MathResource {
     @Autowired
     private PersonService service;
 
-    private SimpleMath math = new SimpleMath();
-
-    @RequestMapping(method= RequestMethod.GET)
-    public List<Person> findbyId() {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Person> findAll() {
         return service.findAll();
     }
 
-    @RequestMapping(value="/{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findbyId(@PathVariable(value = "id") String id) throws Exception {
+    @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Person findbyId(@PathVariable(value = "id") Long id) throws Exception {
         return service.findById(id);
     }
 
-    @RequestMapping(method= RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Person create(@RequestBody Person person) throws Exception {
         return service.create(person);
     }
 
-    @RequestMapping(method= RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Person update(@RequestBody Person person) throws Exception {
         return service.update(person);
     }
 
-    @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
-    public void delete(@PathVariable(value = "id") String id) throws Exception {
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) throws Exception {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 
